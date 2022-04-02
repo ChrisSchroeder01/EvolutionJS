@@ -123,7 +123,7 @@ class World {
             if (!_this.paused) {
                 _this.step();
             }
-        }, 1000/1);
+        }, 1000/100);
     }
 
     pause() {
