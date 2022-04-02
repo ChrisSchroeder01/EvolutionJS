@@ -12,6 +12,7 @@ class Cell {
         // Output
         this.nextMove = {x:0,y:0};
 
+        // Input Neuron Objects
         var iN = [
             new InputNeuron(this.Age, this),
             new InputNeuron(this.Bfd, this),
@@ -22,32 +23,37 @@ class Cell {
             new InputNeuron(this.Rnd, this)
         ];
 
+        // Output Neuron Objects
         var oN = [
             new OutputNeuron(this.MX, this),
             new OutputNeuron(this.MY, this)
         ];
 
+        // Internal Neuron Objects
         this.NeuralNetwork = {inputNeurons: iN, internalNeurons: [], outputNeurons: oN};
         for (let i = 0; i < IN; i++) {
             this.NeuralNetwork.internalNeurons.push(new InternalNeuron())
         }
 
-
+        // Generating Connections between avalible Neurons based on Gnome
         for (var i = 0; i < this.gnome.length; i++) {
             var gen = this.gnome[i];
 
-            var sourceType = gen & 1
-            gen = gen >> 1;
-            var sourceId = gen & 127;
-            gen = gen >> 7;
+            // Source Type & ID
+            var sourceType = gen & 1    // 1st Bit
+            gen = gen >> 1;             // Shift 1
+            var sourceId = gen & 127;   // 2nd to 8th Bits
+            gen = gen >> 7;             // Shift 7
 
-            var sinkType = gen & 1
-            gen = gen >> 1;
-            var sinkId = gen & 127;
-            gen = gen >> 7;
+            // Sink Type & ID
+            var sinkType = gen & 1      // 9th Bit
+            gen = gen >> 1;             // Shift 1
+            var sinkId = gen & 127;     // 10th to 16th Bits
+            gen = gen >> 7;             // Shift 7
 
-            var weight = gen & 65535;
-            weight = weight/13107- 2.5;
+            // Weight
+            var weight = gen & 65535;   // Rest of the Bits
+            weight = weight/13107- 2.5; // Range weight from -2.5 to +2.5
 
             if (sourceType) {
                 var id = sourceId % this.NeuralNetwork.internalNeurons.length;
@@ -70,7 +76,9 @@ class Cell {
        
     }
 
-
+    /**
+     * Fire all Neurons to make a "step" in the simulation. step is not necessary movement.
+     */
     Step() {
         for (var i = 0; i < this.NeuralNetwork.inputNeurons.length; i++) {
             var inputNeuron = this.NeuralNetwork.inputNeurons[i];
@@ -97,6 +105,9 @@ class Cell {
         this.age++;
     }
 
+    /**
+     * Move the cell into forward direction if not occupied
+     */
     Move() {
 
         if (!this.IsOccupied({x:this.location.x + this.nextMove.x,y:this.location.y + this.nextMove.y})) {
@@ -114,6 +125,11 @@ class Cell {
         this.nextMove.y = 0;
     }
 
+    /**
+     * Returns the Cell at the given location or null
+     * @param {{x:number,y:number}} location 
+     * @returns {Cell|null}
+     */
     IsOccupied(location) {
         for (let i = 0; i < this.world.population.length; i++) {
             var cell = this.world.population[i];
@@ -124,6 +140,11 @@ class Cell {
         return null;
     }
 
+    /**
+     * Return a Array of neighbours
+     * @param {*} location 
+     * @returns {[]}
+     */
     getNeighbours(location) {
         var n = [];
         for (let i = 0; i < this.world.population.length; i++) {
@@ -142,6 +163,7 @@ class Cell {
         return n;
     }
 
+    // Input Neuron Methodes
 
     Age() {
         return this.age/300;
@@ -180,6 +202,7 @@ class Cell {
     }
 
 
+    // Output Neuron Methodes
 
     MX(value) {
         if (value) {

@@ -23,6 +23,11 @@ class World {
         });
     }
 
+    /**
+     * Returns World location from where you clicked on the canvas
+     * @param {*} event 
+     * @returns 
+     */
     getCursorPosition(event) {
         const rect = this.canvas.getBoundingClientRect()
         const x = event.clientX - rect.left;
@@ -31,6 +36,11 @@ class World {
         return {x: Math.floor(x/sM), y: Math.floor(y/sM)};
     }
 
+    /**
+     * Returns Cell from given location
+     * @param {*} location 
+     * @returns 
+     */
     getCell(location) {
         for (let i = 0; i < this.population.length; i++) {
             var cell = this.population[i];
@@ -41,11 +51,16 @@ class World {
         return null;
     }
     
-
+    /**
+     * Clears the canvas
+     */
     clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /**
+     * Draw everything
+     */
     draw() {
         for (let i = 0; i < this.population.length; i++) {
             var cell = this.population[i];
@@ -61,6 +76,9 @@ class World {
         }
     }
 
+    /**
+     * Update Data Table
+     */
     updateData() {
         document.getElementById("data").innerHTML = `
             <table>
@@ -85,6 +103,9 @@ class World {
         `;
     }
 
+    /**
+     * Make one "step" in the simulator
+     */
     step() {
         for (let i = 0; i < this.population.length; i++) {
             var cell = this.population[i];
@@ -99,6 +120,9 @@ class World {
         }
     }
 
+    /**
+     * Start the simulation
+     */
     run() {
         var p = parseInt(document.getElementById("population").value);
         var Nn = parseInt(document.getElementById("numNeurons").value);
@@ -108,6 +132,9 @@ class World {
         for (let i = 0; i < p; i++) {
 
             var l = {x: Math.floor(Math.random() * 128), y: Math.floor(Math.random() * 128)};
+            while (this.getCell(l) != null) {
+                l = {x: Math.floor(Math.random() * 128), y: Math.floor(Math.random() * 128)};
+            }
             var g = [
                 Math.floor(Math.random() * 4294967295),
                 Math.floor(Math.random() * 4294967295),
@@ -126,6 +153,9 @@ class World {
         }, 1000/100);
     }
 
+    /**
+     * Pause the simulation
+     */
     pause() {
         this.paused = !this.paused;
         if (this.paused) {
@@ -135,6 +165,9 @@ class World {
         }
     }
 
+    /**
+     * Make a new Generation
+     */
     nextGen() {
 
         // Selection
@@ -156,6 +189,10 @@ class World {
             var r2 = Math.floor(Math.random() * this.population.length);
 
             var l = {x: Math.floor(Math.random() * 128), y: Math.floor(Math.random() * 128)};
+            while (this.getCell(l) != null) {
+                l = {x: Math.floor(Math.random() * 128), y: Math.floor(Math.random() * 128)};
+            }
+
             var g = [];
             for (let i = 0; i < this.population[r1].gnome.length; i++) {
                 if (Boolean(Math.round(Math.random()))) {

@@ -1,3 +1,6 @@
+/**
+ * A input neuron has a sensor methode and the assigned cell object 
+ */
 class InputNeuron {
     constructor(sensor, cell) {
         this.sensor = sensor;
@@ -13,7 +16,9 @@ class InputNeuron {
     }
 }
 
-
+/**
+ * Internal neurons have an array of connections, these connections can be from input or other internal neurons, which will provide the hyperbolic tangent function with values to set the own new value
+ */
 class InternalNeuron {
     constructor() {
         this.connections = [];
@@ -40,6 +45,9 @@ class InternalNeuron {
 
 }
 
+/**
+ * Output neurons have an array of connections, an output methode and an assigned cell, these connections can be from input or internal neurons, which will provide the hyperbolic tangent function with values to deside if the output methode is fired or not.
+ */
 class OutputNeuron {
     constructor(method, cell) {
         this.connections = [];
