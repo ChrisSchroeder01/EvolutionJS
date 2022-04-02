@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+
+        body {
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="world">
+
+    </div>
+    <div id="setting">
+        <button onclick="world.run();">Run</button><button onclick="world.pause();" id="pauseBtn">Pause</button><br>
+        <table>
+            <tr>
+                <th>Population: </th>
+                <td><input type="number" id="population"></td>
+            </tr>
+            <tr>
+                <th>Number of Internal Neurons: </th>
+                <td><input type="number" id="numNeurons" value="2"></td>
+            </tr>
+            <tr>
+                <th></th>
+                <td></td>
+            </tr>
+        </table>
+
+        <div id="data">
+        </div>
+        <div id="details">
+
+        </div>
+    </div>
+</body>
+<script src="neuron.js"></script>
+<script src="cell.js"></script>
+<script src="index.js"></script>
+
+</html>
